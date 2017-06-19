@@ -14,7 +14,7 @@ const userSchema = Schema({
   email: {type: String, required: true, unique: true},
   password: {type: String, required: true},
   findHash: {type: String, unique: true},
-  dateJoined: {type: Date, default: Date.now},
+  dateJoined: {type: Date, default: Date.now, required: true},
   memoryIds: {[]},
   followers: {[]},
   following: {[]},
