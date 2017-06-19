@@ -43,7 +43,7 @@ module.exports = function(router){
 
   });
 
-  router.delete('/memory:id', bearerAuth, (req, res) => {
+  router.delete('/memory/:id', bearerAuth, (req, res) => {
     debug('#POST /memory');
 
     memoryCtrl.deleteMemory(req, res, req.params.id)
