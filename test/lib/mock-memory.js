@@ -1,7 +1,7 @@
 'use strict';
 
 
-const Memory = require('../../models/memory.js');
+const Memory = require('../../model/memory.js');
 
 module.exports = function(done) {
   new Memory({
@@ -12,7 +12,6 @@ module.exports = function(done) {
     songTitle: 'Lorem ipsum song',
     photo: 'Lorem.jpg',
     friends: 'Lorem, Ipsum, Dolor, Sit, Amet',
-    userId: '5dg7asdf6730f71191dfasdf',
     dateCreated: '2017-06-16',
     userId: this.tempUser._id.toString(),
   })
