@@ -7,8 +7,22 @@ const authCtrl = require('../controller/auth-controller.js');
 module.exports = function(router){
   router.post('/signup', (req, res) => {
     debug('#POST /api/signup');
-// sample response for deployment
-    res.send('hello world');
+
+    let tempPass = req.body.password;
+    req.body.password = null;
+    delete req.body.password;
+
+    authCtrl.createUser(req.body, tempPass)
+    .then(token => res.status(201).json(token))
+    .catch(err => res.status(err.status).send(err.message));
+  });
+
+  router.get('/login', basicAuth, (req, res) => {
+    debug('#GET /api/login');
+
+    authCtrl.fetchUser(req.auth)
+    .then(token => res.status(200).json(token))
+    .catch(err => res.status(err.status).send(err.message));
   });
 
   return router;
