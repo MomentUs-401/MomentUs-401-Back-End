@@ -14,7 +14,7 @@ module.exports = function(router){
 
   });
 
-  router.get('/memory/user_id', bearerAuth, (req, res) => {
+  router.get('/memory/:userId', bearerAuth, (req, res) => {
     debug('#POST /memory');
 
     memoryCtrl.getMemory(req)
@@ -43,7 +43,7 @@ module.exports = function(router){
 
   });
 
-  router.delete('/memory', bearerAuth, (req, res) => {
+  router.delete('/memory:id', bearerAuth, (req, res) => {
     debug('#POST /memory');
 
     memoryCtrl.deleteMemory(req, res, req.params.id)
