@@ -1,9 +1,8 @@
 'use strict';
 
-const User = require('../../models/user.js');
+const User = require('../../model/user.js');
 
 module.exports = function(done) {
-
 
   new User({
     username : 'Test User',
