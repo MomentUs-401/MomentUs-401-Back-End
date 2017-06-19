@@ -7,10 +7,12 @@
     "test": "test"
   },
   "scripts": {
-    "test": "mocha",
-    "lint": "eslint ./",
-    "start": "node server.js",
-    "debug": "DEBUG=momentus* nodemon server.js"
+    "test-local": "mocha",
+    "lint": "eslint ./**",
+    "start": "DEBUG=momentus-401 nodemon server.js",
+    "debug": "DEBUG=momentus-401* npm run test",
+    "cover": "istanbul cover _mocha",
+    "test": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
