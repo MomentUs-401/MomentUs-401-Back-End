@@ -23,7 +23,7 @@ mongoose.connect(MONGODB_URI);
 // app.use(errorHandler);
 app.use(cors());
 app.use(bodyParser);
-// app.use('/api', authRoutes(router));
+app.use('/api', authRoutes(router));
 // app.use('/api', memoryRoutes(router));
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));

@@ -12,7 +12,7 @@ const memorySchema = Schema({
   photo: {type: String},
   friends: {type: String, maxlength: 200},
   dateCreated: {type: Date, default: Date.now, required: true},
-  userId: {type: Schema.Types.ObjectId, required: true}
+  userId: {type: Schema.Types.ObjectId, required: true},
 });
 
 module.exports = mongoose.model('memory', memorySchema);

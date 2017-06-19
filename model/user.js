@@ -15,9 +15,9 @@ const userSchema = Schema({
   password: {type: String, required: true},
   findHash: {type: String, unique: true},
   dateJoined: {type: Date, default: Date.now, required: true},
-  memoryIds: {[]},
-  followers: {[]},
-  following: {[]},
+  memoryIds: [{type: Schema.Types.ObjectId, ref: 'memory'}],
+  followers: [],
+  following: [],
 });
 
 userSchema.methods.generatePasswordHash = function(password) {
