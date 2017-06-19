@@ -24,6 +24,16 @@ module.exports = function(router){
     });
   });
 
+  router.get('/map', bearerAuth, (req, res) => {
+    debug('#POST /memory');
+
+    memoryCtrl.getMap(req)
+    .then(gallery => res.json(gallery))
+    .catch(err => {
+      res.status(err.status).send(err.message);
+    });
+  });
+
   router.put('/memory/:id', bearerAuth, (req, res) => {
     debug('#POST /memory');
 
@@ -42,15 +52,5 @@ module.exports = function(router){
 
   });
 
-  router.get('/map', bearerAuth, (req, res) => {
-    debug('#POST /memory');
-
-    memoryCtrl.getMap(req)
-    .then(gallery => res.json(gallery))
-    .catch(err => {
-      res.status(err.status).send(err.message);
-    });
-  });
-  
   return router;
 };

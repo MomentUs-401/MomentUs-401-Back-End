@@ -24,6 +24,13 @@ exports.getMemory = function(req) {
   .catch(err => console.error(err));
 };
 
+exports.getMap = function(req){
+  if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
+
+  return Memory.findById(req.params.id)
+  .catch(err => console.error(err));
+};
+
 exports.updateMemory = function(req) {
   if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
 
@@ -34,8 +41,4 @@ exports.deleteMemory = function(req, res, id){
   if(!id) return Promise.reject(createError(400, 'ID required'));
 
   return Memory.findByIdAndRemove(id);
-};
-
-exports.getMap = function(req){
-
 };
