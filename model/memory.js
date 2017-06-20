@@ -9,7 +9,10 @@ const memorySchema = Schema({
   location: {type: String, required: true},
   description: {type: String, required: true, maxlength: 1000},
   songTitle: {type: String, maxlength: 100},
-  photo: {type: String},
+  photo: {
+    imageURI: {type: String},
+    ObjectId: {type: String},
+  },
   friends: {type: String, maxlength: 200},
   dateCreated: {type: Date, default: Date.now, required: true},
   userId: {type: Schema.Types.ObjectId, required: true},
