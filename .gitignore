@@ -1,6 +1,5 @@
 # ignore db directories
 db
-data
 
 # ignore .env files
 .env
