@@ -16,7 +16,7 @@ const server = require('../server');
 mongoose.Promise = Promise;
 chai.use(http);
 
-describe.only('MEMORY ROUTES', function() {
+describe('MEMORY ROUTES', function() {
   afterEach((done) => {
     Memory.remove({})
     .then(() => done())

@@ -27,7 +27,7 @@ describe('USER ROUTES', function() {
     it('should return a 201 on user created', done => {
       chai.request(server)
       .post('/api/user/signup')
-      .send({ email:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
+      .send({ username:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
@@ -40,7 +40,7 @@ describe('USER ROUTES', function() {
     it('should return a token when user created', done => {
       chai.request(server)
       .post('/api/user/signup')
-      .send({ email:`test${this.tempUser.username}`, password:`${this.tempUser.password}`, role:`${this.tempUser.role}` })
+      .send({ username:`test${this.tempUser.username}`, password:`${this.tempUser.password}`, role:`${this.tempUser.role}` })
       .end((err, res) => {
         if(err) console.error(err.message);
         expect(res).to.have.property('text')
@@ -53,7 +53,7 @@ describe('USER ROUTES', function() {
     it('should return a 404 on bad route', done => {
       chai.request(server)
       .post('/api/user/foo')
-      .send({ email:`test${this.tempUser.username}`, password:`${this.tempUser.password}` })
+      .send({ username:`test${this.tempUser.username}`, password:`${this.tempUser.password}` })
       .end((err, res) => {
         if(!err) console.error(err.message);
         expect(res).to.have.property('status')
@@ -63,7 +63,7 @@ describe('USER ROUTES', function() {
       });
     });
 
-    it('should return a 400 with missing Email', done => {
+    it('should return a 400 with missing username', done => {
       chai.request(server)
       .post('/api/user/signup')
       .send({ password:`${this.tempUser.password}` })
@@ -80,7 +80,7 @@ describe('USER ROUTES', function() {
     it('should return a 400 with missing Password', done => {
       chai.request(server)
       .post('/api/user/signup')
-      .send({ email:`test${this.tempUser.username}` })
+      .send({ username:`test${this.tempUser.username}` })
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(!err) console.error(err.status);
