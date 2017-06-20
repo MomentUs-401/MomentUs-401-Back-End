@@ -14,8 +14,8 @@ module.exports = function(router){
 
   });
 
-  router.get('/memory/:userId', bearerAuth, (req, res) => {
-    debug('#GET /memory/:userId');
+  router.get('/memory', bearerAuth, (req, res) => {
+    debug('#GET /memory');
 
     memoryCtrl.fetchMemory(req)
     .then(memory => res.json(memory))

@@ -15,9 +15,9 @@ exports.createMemory = function(req) {
 };
 
 exports.fetchMemory = function(req) {
-  if(!req.params.userId) return Promise.reject(createError(400, 'ID required'));
+  if(!req.user._id) return Promise.reject(createError(400, 'ID required'));
 
-  return Memory.find({userId: req.params.userId})
+  return Memory.find({userId: req.user._id})
   .catch(err => Promise.reject(createError(err.status, err.message)));
 };
 
