@@ -24,6 +24,6 @@ mongoose.connect(MONGODB_URI);
 app.use(cors());
 app.use(bodyParser);
 app.use('/api', authRoutes(router));
-// app.use('/api', memoryRoutes(router));
+app.use('/api', memoryRoutes(router));
 
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));

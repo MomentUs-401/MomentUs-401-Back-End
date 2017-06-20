@@ -7,7 +7,7 @@ const memoryCtrl = require('../controller/memory-controller.js');
 module.exports = function(router){
   router.post('/memory', bearerAuth, (req, res) => {
     debug('#POST /memory');
-
+  
     memoryCtrl.createMemory(req)
     .then(memory => res.json(memory))
     .catch(err => res.status(err.status).send(err.name));
