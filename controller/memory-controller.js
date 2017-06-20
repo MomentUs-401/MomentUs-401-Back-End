@@ -117,21 +117,8 @@ exports.updateMemory = function(req) {
     })
     .catch(err => Promise.reject(createError(err.status, err.message)));
   } else {
-    return Memory.find({_id: req.params.id, userId: req.user._id})
-    .then(memory => {
-      if(memory[0].photo){
-        let params = {
-          Bucket: process.env.AWS_BUCKET,
-          Key: memory[0].photo.ObjectId,
-        };
-        return s3DeleteProm(params);
-      }
-    })
-    .then(() => {
-      return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
-      .then(memory => memory)
-      .catch(err => Promise.reject(createError(err.status, err.message)));
-    })
+    return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
+    .then(memory => memory)
     .catch(err => Promise.reject(createError(err.status, err.message)));
   }
 };
