@@ -16,18 +16,18 @@ const server = require('../server');
 mongoose.Promise = Promise;
 chai.use(http);
 
-describe('MEMORY ROUTES', function() {
+describe.only('MEMORY ROUTES', function() {
   afterEach((done) => {
     Memory.remove({})
-  .then(() => done())
-  .catch(done);
+    .then(() => done())
+    .catch(done);
   });
 
   describe('testing POST to api/memory', function() {
     before(tempMemory.bind(this));
 
     it('should return a 201 on Memory created', done => {
-      console.log('WOT IS THIS', this.tempMemory);
+      console.log('LOGMYMEM', this.tempMemory);
       chai.request(server)
       .post('/api/memory')
       .send({
@@ -40,11 +40,12 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
-          .that.is.a('number')
-          .that.equals(201);
+        .that.is.a('number')
+        .that.equals(201);
         done();
       });
     });

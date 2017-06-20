@@ -25,7 +25,6 @@ describe('USER ROUTES', function() {
     before(tempUser.bind(this));
 
     it('should return a 201 on user created', done => {
-      console.log('LOGLOTLOG', this.tempUser);
       chai.request(server)
       .post('/api/user/signup')
       .send({ email:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
