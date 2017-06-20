@@ -1,7 +1,7 @@
 'use strict';
 
 require('./lib/mock-env.js');
-require('./lib/aws-mocks.js');
+require('./lib/mock-aws.js');
 
 const chai = require('chai');
 const expect = require('chai').expect;
@@ -9,24 +9,15 @@ const http = require('chai-http');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
 
-const tempUser = require('./lib/mock-user');
 const tempMemory = require('./mock-memory.js');
-const User = require('../model/user');
 const server = require('../server');
 
 mongoose.Promise = Promise;
 chai.use(http);
 
 describe('MEMORY ROUTES', function() {
-
   afterEach((done) => {
     Memory.remove({})
-  .then(() => done())
-  .catch(done);
-  });
-
-  afterEach((done) => {
-    User.remove({})
   .then(() => done())
   .catch(done);
   });
