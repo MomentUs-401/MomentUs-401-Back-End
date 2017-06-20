@@ -6,7 +6,7 @@ module.exports = exports = {};
 exports.uploadMock = {
   ETag: '"5eefd06b5b384cc52f35a0c49414ea31"',
   VersionId: '_F6K4BKgNMBKeTvrPEd27rl_4qPQl9Hy',
-  Location: 'https://slugram-assets.s3.amazonaws.com/cd52be0bc15dd9500e87d9afcf35c19e.png',
+  Location: 'https://momentus-assets.s3.amazonaws.com/cd52be0bc15dd9500e87d9afcf35c19e.png',
   key: 'cd52be0bc15dd9500e87d9afcf35c19e.png',
   Key: 'cd52be0bc15dd9500e87d9afcf35c19e.png',
   Bucket: 'momentus-assets',
