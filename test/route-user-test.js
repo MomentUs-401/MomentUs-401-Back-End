@@ -24,6 +24,7 @@ describe('USER ROUTES', function() {
   describe('testing POST to api/user', function() {
     before(done => {
       tempUser.bind(this);
+      console.log(this);
       done();
     });
 
@@ -110,19 +111,6 @@ describe('USER ROUTES', function() {
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(200);
-        done();
-      });
-    });
-
-    it('should return an id when user logs in', done => {
-      chai.request(server)
-      .get('/api/user/login')
-      .auth(`${this.tempUser.username}`, '123')
-      .end((err, res) => {
-        if(err) console.error(err.name);
-        expect(res).to.have.property('id')
-          .that.is.a('string')
-          .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
         done();
       });
     });

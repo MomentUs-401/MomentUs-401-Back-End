@@ -1,13 +1,14 @@
 'use strict';
 
 require('./lib/mock-env.js');
-// require('./lib/mock-aws.js');
+require('./lib/mock-aws.js');
 
 const chai = require('chai');
 const expect = require('chai').expect;
 const http = require('chai-http');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+
 
 const tempMemory = require('./lib/mock-memory.js');
 const server = require('../server');
@@ -16,7 +17,6 @@ mongoose.Promise = Promise;
 chai.use(http);
 
 describe('MEMORY ROUTES', function() {
-
   afterEach((done) => {
     Memory.remove({})
   .then(() => done())
@@ -215,7 +215,7 @@ describe('MEMORY ROUTES', function() {
     it('should return a 200 on good request', done => {
       chai.request(server)
       .get('/api/memory')
-      .set({Authorization: `Bearer ${this.tempToken}bad`})
+      .set({Authorization: `Bearer ${this.tempToken}`})
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
