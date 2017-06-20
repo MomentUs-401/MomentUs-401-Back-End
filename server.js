@@ -20,7 +20,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/momentus-dev
 mongoose.Promise = Promise;
 mongoose.connect(MONGODB_URI);
 
-// app.use(errorHandler);
+app.use(errorHandler);
 app.use(cors());
 app.use(bodyParser);
 app.use('/api', authRoutes(router));
