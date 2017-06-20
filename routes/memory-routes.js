@@ -52,7 +52,7 @@ module.exports = function(router){
   router.delete('/memory/:id', bearerAuth, (req, res) => {
     debug('#DELETE /memory/:id');
 
-    memoryCtrl.deleteMemory(req.params.id)
+    memoryCtrl.deleteMemory(req.user._id, req.params.id)
     .then(() => res.sendStatus(204))
     .catch(err => res.status(err.status).send(err.message));
 

@@ -24,3 +24,8 @@ exports.fetchUser = function(reqAuth){
   .then(user => user.generateToken())
   .catch(err => Promise.reject(err));
 };
+
+exports.deleteUser = function(id) {
+
+  return User.findByIdAndRemove(id);
+};

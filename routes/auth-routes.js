@@ -2,6 +2,7 @@
 
 const debug = require('debug');
 const basicAuth = require('../lib/basic-auth-middleware.js');
+const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const authCtrl = require('../controller/auth-controller.js');
 
 module.exports = function(router){
@@ -23,6 +24,14 @@ module.exports = function(router){
     authCtrl.fetchUser(req.auth)
     .then(token => res.status(200).json(token))
     .catch(err => res.status(err.status).send(err.message));
+  });
+
+  router.delete('/account/:id', bearerAuth, (req, res) => {
+    debug('#DELETE /account');
+
+    authCtrl.deleteUser(req.params.id)
+    .then( () => res.status(204).send())
+    .catch(err => res.status(err.status).send('Bad delete request'));
   });
 
   return router;

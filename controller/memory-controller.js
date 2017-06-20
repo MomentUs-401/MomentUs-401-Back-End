@@ -24,14 +24,14 @@ function s3UploadProm(params){
   });
 }
 
-// function s3DeleteProm(params){
-//   return new Promise((resolve, reject) => {
-//     s3.deleteObject(params, (err, data) => {
-//       if (err) return reject(createError(err.status, err.name));
-//       return resolve(data);
-//     });
-//   });
-// }
+function s3DeleteProm(params){
+  return new Promise((resolve, reject) => {
+    s3.deleteObject(params, (err, data) => {
+      if (err) return reject(createError(err.status, err.name));
+      return resolve(data);
+    });
+  });
+}
 
 module.exports = exports = {};
 
@@ -90,9 +90,19 @@ exports.updateMemory = function(req) {
   .catch(err => Promise.reject(createError(400, err.message)));
 };
 
-exports.deleteMemory = function(id) {
+exports.deleteMemory = function(reqUser, id) {
   if(!id) return Promise.reject(createError(400, 'ID required'));
 
-  return Memory.findByIdAndRemove(id)
+  return Memory.find({_id: id, userId: reqUser._id})
+  .then(memory => {
+    if(memory.photo) {
+      let params = {
+        Bucket: process.env.AWS_BUCKET,
+        Key: memory.photo.ObjectId,
+      };
+      return s3DeleteProm(params);
+    }
+  })
+  .then( () => Memory.findByIdAndRemove({_id: id, userId: reqUser._id}))
   .catch(err => Promise.reject(createError(err.status, err.message)));
 };
