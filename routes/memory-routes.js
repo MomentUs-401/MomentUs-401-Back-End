@@ -40,7 +40,7 @@ module.exports = function(router){
     });
   });
 
-  router.put('/memory/:id', bearerAuth, (req, res) => {
+  router.put('/memory/:id', bearerAuth, upload.single('image'), (req, res) => {
     debug('#PUT /memory/:id');
 
     memoryCtrl.updateMemory(req)
