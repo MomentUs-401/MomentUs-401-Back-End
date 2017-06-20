@@ -16,7 +16,7 @@ const server = require('../server');
 mongoose.Promise = Promise;
 chai.use(http);
 
-describe.only('MEMORY ROUTES', function() {
+describe('MEMORY ROUTES', function() {
   afterEach((done) => {
     Memory.remove({})
   .then(() => done())
@@ -24,10 +24,7 @@ describe.only('MEMORY ROUTES', function() {
   });
 
   describe('testing POST to api/memory', function() {
-    before(done => {
-      tempMemory.bind(this);
-      done();
-    });
+    before(tempMemory.bind(this));
 
     it('should return a 201 on Memory created', done => {
       console.log('WOT IS THIS', this.tempMemory);
@@ -208,10 +205,7 @@ describe.only('MEMORY ROUTES', function() {
   });
 
   describe('testing GET from api/memory', function() {
-    before(done => {
-      tempMemory.bind(this);
-      done();
-    });
+    before(tempMemory.bind(this));
 
     it('should return a 200 on good request', done => {
       chai.request(server)
