@@ -1,12 +1,13 @@
 'use strict';
 
-const tempUser = require('./lib/mock-user');
-const User = require('../model/user');
 const chai = require('chai');
-const expect = chai.expect;
+const expect = require('chai').expect;
 const http = require('chai-http');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
+
+const tempUser = require('./lib/mock-user');
+const User = require('../model/user');
 const server = require('../server');
 
 mongoose.Promise = Promise;
@@ -20,7 +21,7 @@ describe('USER ROUTES', function() {
   .catch(done);
   });
 
-  describe('POST User', function() {
+  describe('testing POST to api/user', function() {
     before(done => {
       tempUser.bind(this);
       done();
@@ -31,7 +32,7 @@ describe('USER ROUTES', function() {
       .post('/api/user/signup')
       .send({ email:`test${this.tempUser.email}`, password:'123', role:`${this.tempUser.role}` })
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(201);
@@ -44,7 +45,7 @@ describe('USER ROUTES', function() {
       .post('/api/user/signup')
       .send({ email:`test${this.tempUser.email}`, password:`${this.tempUser.password}`, role:`${this.tempUser.role}` })
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('text')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
@@ -94,7 +95,7 @@ describe('USER ROUTES', function() {
     });
   });
 
-  describe('GET User', function() {
+  describe('testing GET from api/user/login', function() {
     before(done => {
       tempUser.bind(this);
       done();
@@ -103,9 +104,9 @@ describe('USER ROUTES', function() {
     it('should return a 200 on good request', done => {
       chai.request(server)
       .get('/api/user/login')
-      .auth(`${this.tempUser.email}`, '123')
+      .auth(`${this.user.name}`, '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(200);
@@ -118,7 +119,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/login')
       .auth(`${this.tempUser.email}`, '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('id')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
@@ -131,7 +132,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/login')
       .auth(`${this.tempUser.email}`, '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('text')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
@@ -144,7 +145,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/foo')
       .auth(`test${this.tempUser.email}`, '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
@@ -156,7 +157,7 @@ describe('USER ROUTES', function() {
       chai.request(server)
       .get('/api/user/login')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
@@ -169,7 +170,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/login')
       .auth(`test${this.tempUser.email}`, 'BADPASS')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
@@ -195,7 +196,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/login')
       .auth('nonsense', '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
@@ -208,7 +209,7 @@ describe('USER ROUTES', function() {
       .get('/api/user/login')
       .auth(``, '123')
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
@@ -228,7 +229,7 @@ describe('USER ROUTES', function() {
       .delete(`/api/user/delete/${this.tempUser._id}`)
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(204);
@@ -241,7 +242,7 @@ describe('USER ROUTES', function() {
       .delete(`/api/user/foo/${this.tempUser._id}`)
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
@@ -254,7 +255,7 @@ describe('USER ROUTES', function() {
       .delete('/api/user/delete')
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
@@ -267,7 +268,7 @@ describe('USER ROUTES', function() {
       .delete(`/api/user/delete/${this.tempUser._id}`)
       .set('Authorization', `MAC ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.error(err.message);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
