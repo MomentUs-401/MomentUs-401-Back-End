@@ -24,12 +24,10 @@ describe('MEMORY ROUTES', function() {
   });
 
   describe('testing POST to api/memory', function() {
-    before(done => {
-      tempMemory.bind(this);
-      done();
-    });
+    before(tempMemory.bind(this));
 
     it('should return a 201 on Memory created', done => {
+      console.log('WOT IS THIS', this.tempMemory);
       chai.request(server)
       .post('/api/memory')
       .send({
@@ -207,10 +205,7 @@ describe('MEMORY ROUTES', function() {
   });
 
   describe('testing GET from api/memory', function() {
-    before(done => {
-      tempMemory.bind(this);
-      done();
-    });
+    before(tempMemory.bind(this));
 
     it('should return a 200 on good request', done => {
       chai.request(server)

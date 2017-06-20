@@ -22,13 +22,10 @@ describe('USER ROUTES', function() {
   });
 
   describe('testing POST to api/user', function() {
-    before(done => {
-      tempUser.bind(this);
-      console.log(this);
-      done();
-    });
+    before(tempUser.bind(this));
 
     it('should return a 201 on user created', done => {
+      console.log('LOGLOTLOG', this.tempUser);
       chai.request(server)
       .post('/api/user/signup')
       .send({ email:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
@@ -46,7 +43,7 @@ describe('USER ROUTES', function() {
       .post('/api/user/signup')
       .send({ email:`test${this.tempUser.username}`, password:`${this.tempUser.password}`, role:`${this.tempUser.role}` })
       .end((err, res) => {
-        if(err) console.error(err.name);
+        if(err) console.error(err.message);
         expect(res).to.have.property('text')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
@@ -59,7 +56,7 @@ describe('USER ROUTES', function() {
       .post('/api/user/foo')
       .send({ email:`test${this.tempUser.username}`, password:`${this.tempUser.password}` })
       .end((err, res) => {
-        if(!err) console.error(res.message);
+        if(!err) console.error(err.message);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
@@ -73,7 +70,7 @@ describe('USER ROUTES', function() {
       .send({ password:`${this.tempUser.password}` })
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(!err) console.error(res.message);
+        if(!err) console.error(err.message);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -97,10 +94,7 @@ describe('USER ROUTES', function() {
   });
 
   describe('testing GET from api/user/login', function() {
-    before(done => {
-      tempUser.bind(this);
-      done();
-    });
+    before(tempUser.bind(this));
 
     it('should return a 200 on good request', done => {
       chai.request(server)
@@ -207,10 +201,7 @@ describe('USER ROUTES', function() {
   });
 
   describe('DELETE route', function() {
-    before(done => {
-      tempUser.bind(this);
-      done();
-    });
+    before(tempUser.bind(this));
 
     it('should return a 204 succesful delete', done => {
       chai.request(server)
