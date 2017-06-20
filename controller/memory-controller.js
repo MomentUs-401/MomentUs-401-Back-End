@@ -84,25 +84,59 @@ exports.getMap = function(req) {
 
 exports.updateMemory = function(req) {
   if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
-  console.log(req.params.id);
-  return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
-  .then(memory => memory)
-  .catch(err => Promise.reject(createError(400, err.message)));
+
+  if(req.file) {
+    return Memory.find({_id: req.params.id, userId: req.user._id})
+    .then(memory => {
+      if(memory[0].photo) {
+        let params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: memory[0].photo.ObjectId,
+        };
+        return s3DeleteProm(params);
+      }
+    })
+    .then(() => {
+      let ext = path.extname(req.file.originalname);
+      let params = {
+        ACL: 'public-read',
+        Bucket: process.env.AWS_BUCKET,
+        Key: `${req.file.filename}${ext}`,
+        Body: fs.createReadStream(req.file.path),
+      };
+      return s3UploadProm(params)
+      .then(s3Data => {
+        del([`${dataDir}/*`]);
+        req.body.photo = {
+          imageURI: s3Data.Location,
+          ObjectId: s3Data.Key,
+        };
+        return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true});
+      })
+      .catch(err => Promise.reject(createError(err.status, err.message)));
+    })
+    .catch(err => Promise.reject(createError(err.status, err.message)));
+  } else {
+    return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
+    .then(memory => memory)
+    .catch(err => Promise.reject(createError(err.status, err.message)));
+  }
 };
 
 exports.deleteMemory = function(reqUser, id) {
   if(!id) return Promise.reject(createError(400, 'ID required'));
-
-  return Memory.find({_id: id, userId: reqUser._id})
+  console.log('reqUser + id', reqUser, id);
+  return Memory.find({_id: id, userId: reqUser})
   .then(memory => {
-    if(memory.photo) {
+    console.log('memoryPhoto', memory);
+    if(memory[0].photo) {
       let params = {
         Bucket: process.env.AWS_BUCKET,
-        Key: memory.photo.ObjectId,
+        Key: memory[0].photo.ObjectId,
       };
       return s3DeleteProm(params);
     }
   })
-  .then( () => Memory.findByIdAndRemove({_id: id, userId: reqUser._id}))
+  .then( () => Memory.findByIdAndRemove({_id: id, userId: reqUser}))
   .catch(err => Promise.reject(createError(err.status, err.message)));
 };
