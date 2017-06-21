@@ -38,6 +38,8 @@ module.exports = exports = {};
 exports.createMemory = function(req) {
   debug('#memoryCtrl creatememory');
 
+  if(!req.user) return Promise.reject(createError(400, 'ID required'));
+  
   req.body.userId = req.user._id;
 
   if (req.file) {
@@ -136,7 +138,15 @@ exports.deleteMemory = function(reqUser, id) {
       };
       return s3DeleteProm(params);
     }
+    return Promise.reslove(memory);
   })
-  .then( () => Memory.findByIdAndRemove({_id: id, userId: reqUser}))
-  .catch(err => Promise.reject(createError(err.status, err.message)));
+  .then( (memory) => {
+    console.log('then middle***********************');
+    console.log('memory', memory);
+    Memory.findByIdAndRemove({_id: id, userId: reqUser});}
+  )
+  .catch(err => {
+    console.log('err middle***********************');
+    return Promise.reject(createError(err.status, err.message));
+  });
 };

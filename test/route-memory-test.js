@@ -8,7 +8,8 @@ const expect = require('chai').expect;
 const http = require('chai-http');
 const Promise = require('bluebird');
 const mongoose = require('mongoose');
-
+const Memory = require('../model/memory.js');
+const User = require('../model/user.js');
 
 const tempMemory = require('./lib/mock-memory.js');
 const server = require('../server');
@@ -17,11 +18,14 @@ mongoose.Promise = Promise;
 chai.use(http);
 
 describe('MEMORY ROUTES', function() {
-  afterEach((done) => {
-    Memory.remove({})
-    .then(() => done())
-    .catch(done);
-  });
+  // afterEach((done) => {
+  //   Promise.all([
+  //     Memory.remove({}),
+  //     User.remove({}),
+  //   ])
+  //   .then(() => done())
+  //   .catch(done);
+  // });
 
   describe('testing POST to api/memory', function() {
     before(tempMemory.bind(this));
@@ -42,7 +46,7 @@ describe('MEMORY ROUTES', function() {
       })
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.error(err.name);
+        if(err) console.error('test1', err.name);
         expect(res).to.have.property('status')
         .that.is.a('number')
         .that.equals(201);
@@ -52,7 +56,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 404 on bad route', done => {
       chai.request(server)
-      .post('api/foo')
+      .post('/api/foo')
       .send({
         title: `${this.tempMemory.title}`,
         date: `${this.tempMemory.date}`,
@@ -63,8 +67,9 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error('test2', err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
@@ -74,7 +79,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 400 with missing title', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title: undefined,
         date: `${this.tempMemory.date}`,
@@ -85,8 +90,9 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -96,7 +102,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 400 with missing date', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title: `${this.tempMemory.title}`,
         date: undefined,
@@ -107,8 +113,9 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -118,7 +125,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 400 with missing location', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title: `${this.tempMemory.title}`,
         date: `${this.tempMemory.date}`,
@@ -129,8 +136,9 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -140,7 +148,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 400 with missing description', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title: `${this.tempMemory.title}`,
         date: `${this.tempMemory.date}`,
@@ -151,8 +159,9 @@ describe('MEMORY ROUTES', function() {
         dateCreated: `${this.tempMemory.dateCreated}`,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -162,7 +171,7 @@ describe('MEMORY ROUTES', function() {
 
     it('should return a 400 with missing dateCreated', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title: `${this.tempMemory.title}`,
         date: `${this.tempMemory.date}`,
@@ -173,8 +182,10 @@ describe('MEMORY ROUTES', function() {
         dateCreated: undefined,
         userId: `${this.tempMemory.userId}`,
       })
+      .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
-        if(err) console.err(err.name);
+        // console.log('res', res);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
@@ -182,9 +193,9 @@ describe('MEMORY ROUTES', function() {
       });
     });
 
-    it('should return a 400 with missing userId', done => {
+    it('should return a 401 with missing userId', done => {
       chai.request(server)
-      .post('api/memory')
+      .post('/api/memory')
       .send({
         title:`${this.tempMemory.title}`,
         date: `${this.tempMemory.date}`,
@@ -196,10 +207,10 @@ describe('MEMORY ROUTES', function() {
         userId: undefined,
       })
       .end((err, res) => {
-        if(err) console.err(err.name);
+        if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
-          .that.equals(400);
+          .that.equals(401);
         done();
       });
     });
@@ -217,6 +228,117 @@ describe('MEMORY ROUTES', function() {
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(200);
+        done();
+      });
+    });
+    
+    it('should return a 404 if the memory id does not exist', done => {
+      chai.request(server)
+      .get('/api/memory/abc123')
+      .set({Authorization: `Bearer ${this.tempToken}`})
+      .end((err, res) => {
+        if(err) console.error(err.name);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(404);
+        done();
+      });
+    });
+    
+    it('should return a 401 without a token', done => {
+      chai.request(server)
+      .get('/api/memory')
+      .end((err, res) => {
+        if(err) console.error(err.name);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(401);
+        done();
+      });
+    });
+  });
+  
+  describe('testing PUT from api/memory', function() {
+    before(tempMemory.bind(this));
+
+    it('should return a 200 on good request', done => {
+      chai.request(server)
+      .put(`/api/memory/${this.tempMemory._id}`)
+      .set({Authorization: `Bearer ${this.tempToken}`})
+      .send({
+        title: 'New title',
+      })
+      .end((err, res) => {
+        if(err) console.error(err.name);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(200);
+        expect(res.body.title).to.equal('New title');
+        done();
+      });
+    });
+    
+    // it('should return a 400 on bad request', done => {
+    //   chai.request(server)
+    //   .put(`/api/memory/${this.tempMemory._id}`)
+    //   .set({Authorization: `Bearer ${this.tempToken}`})
+    //   .send({
+    //     date: 'New title',
+    //   })
+    //   .end((err, res) => {
+    //     if(err) console.error(err.name);
+    //     expect(res).to.have.property('status')
+    //       .that.is.a('number')
+    //       .that.equals(400);
+    //     // expect(res.body.title).to.equal('New title');
+    //     done();
+    //   });
+    // });
+    
+    it('should return a 401 without a token', done => {
+      chai.request(server)
+      .put(`/api/memory/${this.tempMemory._id}`)
+      .send({
+        title: 'New title',
+      })
+      .end((err, res) => {
+        if(err) console.error(err.name);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(401);
+        done();
+      });
+    });
+    
+    it('should return a 404 without the memory Id', done => {
+      chai.request(server)
+      .put('/api/memory')
+      .set({Authorization: `Bearer ${this.tempToken}`})
+      .send({
+        title: 'New title',
+      })
+      .end((err, res) => {
+        if(err) console.error(err.name);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(404);
+        done();
+      });
+    });
+  });
+
+  describe.only('testing DELETE from api/memory', function() {
+    before(tempMemory.bind(this));
+
+    it('should return a 204 on proper delete request', done => {
+      chai.request(server)
+      .delete(`/api/memory/${this.tempMemory._id}`)
+      .set({Authorization: `Bearer ${this.tempToken}`})
+      .end((err, res) => {
+        if(err) console.error(err);
+        expect(res).to.have.property('status')
+          .that.is.a('number')
+          .that.equals(204);
         done();
       });
     });
