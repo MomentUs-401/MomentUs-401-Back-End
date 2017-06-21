@@ -17,15 +17,15 @@ const server = require('../server');
 mongoose.Promise = Promise;
 chai.use(http);
 
-describe('MEMORY ROUTES', function() {
-  // afterEach((done) => {
-  //   Promise.all([
-  //     Memory.remove({}),
-  //     User.remove({}),
-  //   ])
-  //   .then(() => done())
-  //   .catch(done);
-  // });
+describe.only('MEMORY ROUTES', function() {
+  afterEach((done) => {
+    Promise.all([
+      Memory.remove({}),
+      User.remove({}),
+    ])
+    .then(() => done())
+    .catch(done);
+  });
 
   describe('testing POST to api/memory', function() {
     before(tempMemory.bind(this));
@@ -327,7 +327,7 @@ describe('MEMORY ROUTES', function() {
     });
   });
 
-  describe.only('testing DELETE from api/memory', function() {
+  describe('testing DELETE from api/memory', function() {
     before(tempMemory.bind(this));
 
     it('should return a 204 on proper delete request', done => {
@@ -335,7 +335,7 @@ describe('MEMORY ROUTES', function() {
       .delete(`/api/memory/${this.tempMemory._id}`)
       .set({Authorization: `Bearer ${this.tempToken}`})
       .end((err, res) => {
-        if(err) console.error(err);
+        // if(err) console.error(err);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(204);
