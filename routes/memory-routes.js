@@ -13,7 +13,7 @@ module.exports = function(router){
     debug('#POST /memory');
 
     memoryCtrl.createMemory(req)
-    .then(memory => res.json(memory))
+    .then(memory => res.status(201).json(memory))
     .catch(err => res.status(err.status).send(err.name));
 
   });

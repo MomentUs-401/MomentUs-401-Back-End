@@ -38,6 +38,8 @@ module.exports = exports = {};
 exports.createMemory = function(req) {
   debug('#memoryCtrl creatememory');
 
+  if(!req.user) return Promise.reject(createError(400, 'ID required'));
+  
   req.body.userId = req.user._id;
 
   if (req.file) {
