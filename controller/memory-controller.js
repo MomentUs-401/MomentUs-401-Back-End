@@ -40,7 +40,7 @@ exports.createMemory = function(req) {
   debug('#memoryCtrl creatememory');
 
   if(!req.user) return Promise.reject(createError(400, 'ID required'));
-  
+
   req.body.userId = req.user._id;
 
   if (req.file) {
@@ -52,22 +52,22 @@ exports.createMemory = function(req) {
       Body: fs.createReadStream(req.file.path),
     };
     return s3UploadProm(params)
-    .then(s3Data => {
-      del([`${dataDir}/*`]);
-      req.body.photo = {
-        imageURI: s3Data.Location,
-        ObjectId: s3Data.Key,
-      };
-      return new Memory(req.body).save();
-    })
+      .then(s3Data => {
+        del([`${dataDir}/*`]);
+        req.body.photo = {
+          imageURI: s3Data.Location,
+          ObjectId: s3Data.Key,
+        };
+        return new Memory(req.body).save();
+      })
     // .then(memory => memory)
-    .catch(err => Promise.reject(createError(err.status, err.message)));
+      .catch(err => Promise.reject(createError(err.status, err.message)));
     //end of file upload? change memory model/schema? 2 paths?
   } else {
 
     return new Memory(req.body).save()
-    .then(memory => memory)
-    .catch(err => Promise.reject(createError(err.status, err.message)));
+      .then(memory => memory)
+      .catch(err => Promise.reject(createError(err.status, err.message)));
   }
 };
 
@@ -75,14 +75,14 @@ exports.fetchMemory = function(req) {
   if(!req.user._id) return Promise.reject(createError(400, 'ID required'));
 
   return Memory.find({userId: req.user._id})
-  .catch(err => Promise.reject(createError(err.status, err.message)));
+    .catch(err => Promise.reject(createError(err.status, err.message)));
 };
 
 exports.getMap = function(req) {
   if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
 
   return Memory.findById(req.params.id)
-  .catch(err => Promise.reject(createError(err.status, err.message)));
+    .catch(err => Promise.reject(createError(err.status, err.message)));
 };
 
 exports.updateMemory = function(req) {
@@ -90,39 +90,39 @@ exports.updateMemory = function(req) {
 
   if(req.file) {
     return Memory.find({_id: req.params.id, userId: req.user._id})
-    .then(memory => {
-      if(memory[0].photo) {
+      .then(memory => {
+        if(memory[0].photo) {
+          let params = {
+            Bucket: process.env.AWS_BUCKET,
+            Key: memory[0].photo.ObjectId,
+          };
+          return s3DeleteProm(params);
+        }
+      })
+      .then(() => {
+        let ext = path.extname(req.file.originalname);
         let params = {
+          ACL: 'public-read',
           Bucket: process.env.AWS_BUCKET,
-          Key: memory[0].photo.ObjectId,
+          Key: `${req.file.filename}${ext}`,
+          Body: fs.createReadStream(req.file.path),
         };
-        return s3DeleteProm(params);
-      }
-    })
-    .then(() => {
-      let ext = path.extname(req.file.originalname);
-      let params = {
-        ACL: 'public-read',
-        Bucket: process.env.AWS_BUCKET,
-        Key: `${req.file.filename}${ext}`,
-        Body: fs.createReadStream(req.file.path),
-      };
-      return s3UploadProm(params)
-      .then(s3Data => {
-        del([`${dataDir}/*`]);
-        req.body.photo = {
-          imageURI: s3Data.Location,
-          ObjectId: s3Data.Key,
-        };
-        return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true});
+        return s3UploadProm(params)
+          .then(s3Data => {
+            del([`${dataDir}/*`]);
+            req.body.photo = {
+              imageURI: s3Data.Location,
+              ObjectId: s3Data.Key,
+            };
+            return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true});
+          })
+          .catch(err => Promise.reject(createError(err.status, err.message)));
       })
       .catch(err => Promise.reject(createError(err.status, err.message)));
-    })
-    .catch(err => Promise.reject(createError(err.status, err.message)));
   } else {
     return Memory.findOneAndUpdate({_id:req.params.id}, req.body, {new: true})
-    .then(memory => memory)
-    .catch(err => Promise.reject(createError(err.status, err.message)));
+      .then(memory => memory)
+      .catch(err => Promise.reject(createError(err.status, err.message)));
   }
 };
 
@@ -130,25 +130,25 @@ exports.deleteMemory = function(reqUser, id) {
   if(!id) return Promise.reject(createError(400, 'ID required'));
   console.log('reqUser + id', reqUser, id);
   return Memory.find({_id: id, userId: reqUser})
-  .then(memory => {
-    console.log('memoryPhoto', memory);
-    if(memory[0].photo) {
-      let params = {
-        Bucket: process.env.AWS_BUCKET,
-        Key: memory[0].photo.ObjectId,
-      };
-      s3DeleteProm(params);
-    }
-    return memory;
-  })
-  .then( (memory) => {
-    console.log('then middle***********************');
-    console.log('memory', memory);
-    Memory.findByIdAndRemove({_id: id, userId: reqUser});}
-  )
-  .catch(err => {
-    console.log('err middle***********************');
-    console.log(err);
-    return Promise.reject(createError(err.status, err.message));
-  });
+    .then(memory => {
+      console.log('memoryPhoto', memory);
+      if(memory[0].photo) {
+        let params = {
+          Bucket: process.env.AWS_BUCKET,
+          Key: memory[0].photo.ObjectId,
+        };
+        s3DeleteProm(params);
+      }
+      return memory;
+    })
+    .then( (memory) => {
+      console.log('then middle***********************');
+      console.log('memory', memory);
+      Memory.findByIdAndRemove({_id: id, userId: reqUser});}
+    )
+    .catch(err => {
+      console.log('err middle***********************');
+      console.log(err);
+      return Promise.reject(createError(err.status, err.message));
+    });
 };

@@ -11,14 +11,14 @@ module.exports = function(done) {
     password: 'password',
     role: 'user',
   }).generatePasswordHash('123')
-  .then(user => user.save())
-  .then(user => {
-    this.tempUser = user;
-    return user.generateToken();
-  })
-  .then(token => {
-    this.tempToken = token;
-    done();
-  })
-  .catch(done);
+    .then(user => user.save())
+    .then(user => {
+      this.tempUser = user;
+      return user.generateToken();
+    })
+    .then(token => {
+      this.tempToken = token;
+      done();
+    })
+    .catch(done);
 };
