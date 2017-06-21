@@ -26,6 +26,7 @@ function s3UploadProm(params){
 
 function s3DeleteProm(params){
   return new Promise((resolve, reject) => {
+    console.log('s3 delete params', params);
     s3.deleteObject(params, (err, data) => {
       if (err) return reject(createError(err.status, err.name));
       return resolve(data);
@@ -136,9 +137,9 @@ exports.deleteMemory = function(reqUser, id) {
           Bucket: process.env.AWS_BUCKET,
           Key: memory[0].photo.ObjectId,
         };
-        return s3DeleteProm(params);
+        s3DeleteProm(params);
       }
-      return Promise.reslove(memory);
+      return memory;
     })
     .then( (memory) => {
       console.log('then middle***********************');
@@ -147,6 +148,7 @@ exports.deleteMemory = function(reqUser, id) {
     )
     .catch(err => {
       console.log('err middle***********************');
+      console.log(err);
       return Promise.reject(createError(err.status, err.message));
     });
 };

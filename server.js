@@ -4,7 +4,6 @@ require('dotenv').load();
 
 const express = require('express');
 const cors = require('cors');
-const debug = require('debug')('momentus:server');
 const Promise = require('bluebird');
 const errorHandler = require('./lib/error-middleware');
 const authRoutes  = require('./routes/auth-routes');
