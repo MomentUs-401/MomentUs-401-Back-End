@@ -10,7 +10,7 @@ const memorySchema = Schema({
   description: {type: String, required: true, maxlength: 1000},
   songTitle: {type: String, maxlength: 100},
   photo: {
-    imageURI: {type: String},
+    imageURI: {type: String, default: '../assets/momentus-default.png'},
     ObjectId: {type: String},
   },
   friends: {type: String, maxlength: 200},
