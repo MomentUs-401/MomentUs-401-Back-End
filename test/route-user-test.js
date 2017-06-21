@@ -21,20 +21,20 @@ describe('USER ROUTES', function() {
   .catch(done);
   });
 
-  describe('testing POST to api/user', function() {
+  describe.only('testing POST to api/user', function() {
     before(tempUser.bind(this));
 
-    it('should return a 201 on user created', done => {
+    it.only('should return a 201 on user created', done => {
       chai.request(server)
-      .post('/api/user/signup')
-      .send({ username:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
+      .post('/api/signup')
+      .send({ username:`${this.tempUser.username}`, password:'123', email:`${this.tempUser.email}` })
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(201);
-        done();
       });
+      done();
     });
 
     it('should return a token when user created', done => {
