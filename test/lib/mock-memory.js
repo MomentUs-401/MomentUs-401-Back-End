@@ -21,11 +21,11 @@ module.exports = function(done) {
       userId: this.tempUser._id.toString(),
     })
 
-  .save()
-  .then(memory => {
-    this.tempMemory = memory;
-    done();
-  })
-  .catch(done);
+      .save()
+      .then(memory => {
+        this.tempMemory = memory;
+        done();
+      })
+      .catch(done);
   });
 };

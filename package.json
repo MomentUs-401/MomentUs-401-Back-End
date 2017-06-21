@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test-local": "mocha",
-    "lint": "eslint ./**",
+    "lint": "eslint ./** --ignore-pattern /node_modules\/*/",
     "start": "DEBUG=momentus-401 nodemon server.js",
     "debug": "DEBUG=momentus-401* npm run test",
     "cover": "istanbul cover _mocha",
@@ -46,6 +46,7 @@
     "chai": "^4.0.2",
     "chai-http": "^3.0.0",
     "coveralls": "^2.13.1",
+    "eslint": "^4.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^3.4.2",
     "mocha-lcov-reporter": "^1.3.0"

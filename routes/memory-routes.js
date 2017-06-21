@@ -13,8 +13,8 @@ module.exports = function(router){
     debug('#POST /memory');
 
     memoryCtrl.createMemory(req)
-    .then(memory => res.status(201).json(memory))
-    .catch(err => res.status(err.status).send(err.name));
+      .then(memory => res.status(201).json(memory))
+      .catch(err => res.status(err.status).send(err.name));
 
   });
 
@@ -22,30 +22,30 @@ module.exports = function(router){
     debug('#GET /memory');
 
     memoryCtrl.fetchMemory(req)
-    .then(memory => res.json(memory))
-    .catch(err => {
-      res.status(err.status).send(err.message);
-    });
+      .then(memory => res.json(memory))
+      .catch(err => {
+        res.status(err.status).send(err.message);
+      });
   });
 
 
-//revisit map route once googlemaps and location info is clearer
+  //revisit map route once googlemaps and location info is clearer
   router.get('/map', bearerAuth, (req, res) => {
     debug('#GET /map');
 
     memoryCtrl.getMap(req)
-    .then(memories => res.json(memories))
-    .catch(err => {
-      res.status(err.status).send(err.message);
-    });
+      .then(memories => res.json(memories))
+      .catch(err => {
+        res.status(err.status).send(err.message);
+      });
   });
 
   router.put('/memory/:id', bearerAuth, upload.single('image'), (req, res) => {
     debug('#PUT /memory/:id');
 
     memoryCtrl.updateMemory(req)
-    .then(memory => res.json(memory))
-    .catch(err => res.status(err.status).send(err.message));
+      .then(memory => res.json(memory))
+      .catch(err => res.status(err.status).send(err.message));
 
   });
 
@@ -53,8 +53,8 @@ module.exports = function(router){
     debug('#DELETE /memory/:id');
 
     memoryCtrl.deleteMemory(req.user._id, req.params.id)
-    .then(() => res.sendStatus(204))
-    .catch(err => res.status(err.status).send(err.message));
+      .then(() => res.sendStatus(204))
+      .catch(err => res.status(err.status).send(err.message));
 
   });
 
