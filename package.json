@@ -12,6 +12,7 @@
     "start": "DEBUG=momentus-401 nodemon server.js",
     "debug": "DEBUG=momentus-401* npm run test",
     "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
     "test": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
