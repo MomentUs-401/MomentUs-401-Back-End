@@ -206,7 +206,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 204 succesful delete', done => {
       chai.request(server)
-      .delete(`/api/user/delete/${this.tempUser._id}`)
+      .delete(`/api/account/${this.tempUser._id}`)
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
@@ -232,7 +232,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 404 on missing id', done => {
       chai.request(server)
-      .delete('/api/user/delete')
+      .delete('/api/account')
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
@@ -245,7 +245,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 401 on bad token type', done => {
       chai.request(server)
-      .delete(`/api/user/delete/${this.tempUser._id}`)
+      .delete(`/api/account/${this.tempUser._id}`)
       .set('Authorization', `MAC ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
