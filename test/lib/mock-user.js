@@ -8,6 +8,7 @@ module.exports = function(done) {
     username : 'Test User' + Math.floor(Math.random() * (100 -1)) +1,
     dateJoined: '2016-12-31',
     email: 'testUser' + Math.floor(Math.random() * (100 -1)) +1 + '@gmail.com',
+    password: 'password',
     role: 'user',
   }).generatePasswordHash('123')
   .then(user => user.save())

@@ -26,28 +26,28 @@ describe('USER ROUTES', function() {
 
     it('should return a 201 on user created', done => {
       chai.request(server)
-      .post('/api/user/signup')
-      .send({ username:`test${this.tempUser.username}`, password:'123', role:`${this.tempUser.role}` })
+      .post('/api/signup')
+      .send({ username:`${this.tempUser.username}`, password:'123', email:`${this.tempUser.email}` })
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(201);
-        done();
       });
+      done();
     });
 
     it('should return a token when user created', done => {
       chai.request(server)
-      .post('/api/user/signup')
-      .send({ username:`test${this.tempUser.username}`, password:`${this.tempUser.password}`, role:`${this.tempUser.role}` })
+      .post('/api/signup')
+      .send({ username:`test${this.tempUser.username}`, password:`${this.tempUser.password}` })
       .end((err, res) => {
         if(err) console.error(err.message);
         expect(res).to.have.property('text')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
-        done();
       });
+      done();
     });
 
     it('should return a 404 on bad route', done => {
@@ -59,13 +59,14 @@ describe('USER ROUTES', function() {
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
-        done();
       });
+      done();
     });
 
+    // cannot make this fail 
     it('should return a 400 with missing username', done => {
       chai.request(server)
-      .post('/api/user/signup')
+      .post('/api/signup')
       .send({ password:`${this.tempUser.password}` })
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
@@ -73,13 +74,14 @@ describe('USER ROUTES', function() {
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(400);
-        done();
       });
+      done();
     });
 
+    // cannot make this fail
     it('should return a 400 with missing Password', done => {
       chai.request(server)
-      .post('/api/user/signup')
+      .post('/api/signup')
       .send({ username:`test${this.tempUser.username}` })
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
@@ -97,28 +99,28 @@ describe('USER ROUTES', function() {
 
     it('should return a 200 on good request', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .auth(`${this.tempUser.username}`, '123')
       .end((err, res) => {
         if(err) console.error(err.username);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(200);
-        done();
       });
+      done();
     });
 
     it('should also return a token when user logs in', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .auth(`${this.tempUser.username}`, '123')
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('text')
           .that.is.a('string')
           .that.matches(/[A-Za-z0-9\-\._~\+\/]+=*/g);
-        done();
       });
+      done();
     });
 
     it('should return a 404 on bad route', done => {
@@ -130,72 +132,72 @@ describe('USER ROUTES', function() {
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(404);
-        done();
       });
+      done();
     });
 
     it('should return a 401 with no auth header', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
-        done();
       });
+      done();
     });
 
     it('should return a 401 on bad password', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .auth(`test${this.tempUser.username}`, 'BADPASS')
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
-        done();
       });
+      done();
     });
 
     it('should return a 401 on missing password', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .auth(`test${this.tempUser.username}`, '')
       .end((err, res) => {
         if(err) console.error(err.status);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
-        done();
       });
+      done();
     });
 
     it('should return a 401 on invalid username in request', done => {
       chai.request(server)
-      .get('/api/user/login')
+      .get('/api/login')
       .auth('nonsense', '123')
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
-        done();
       });
+      done();
     });
 
     it('should return a 401 on missing username in request', done => {
       chai.request(server)
-      .get('/api/user/login')
-      .auth(undefined, '123')
+      .get('/api/login')
+      .auth('', '123')
       .end((err, res) => {
         if(err) console.error(err.name);
         expect(res).to.have.property('status')
           .that.is.a('number')
           .that.equals(401);
-        done();
       });
+      done();
     });
   });
 
@@ -204,7 +206,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 204 succesful delete', done => {
       chai.request(server)
-      .delete(`/api/user/delete/${this.tempUser._id}`)
+      .delete(`/api/account/${this.tempUser._id}`)
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
@@ -230,7 +232,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 404 on missing id', done => {
       chai.request(server)
-      .delete('/api/user/delete')
+      .delete('/api/account')
       .set('Authorization', `Bearer ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
@@ -243,7 +245,7 @@ describe('USER ROUTES', function() {
 
     it('should return a 401 on bad token type', done => {
       chai.request(server)
-      .delete(`/api/user/delete/${this.tempUser._id}`)
+      .delete(`/api/account/${this.tempUser._id}`)
       .set('Authorization', `MAC ${this.tempToken}`)
       .end((err, res) => {
         if(err) console.error(err.name);
