@@ -19,6 +19,7 @@ function s3UploadProm(params){
   /* istanbul ignore next */
   return new Promise((resolve, reject) => {
     s3.upload(params, (err, data) => {
+      /* istanbul ignore next */
       if (err) return reject(createError(err.status, err.name));
       return resolve(data);
     });
@@ -28,6 +29,7 @@ function s3UploadProm(params){
 function s3DeleteProm(params){
   return new Promise((resolve, reject) => {
     s3.deleteObject(params, (err, data) => {
+      /* istanbul ignore next */
       if (err) return reject(createError(err.status, err.name));
       return resolve(data);
     });
@@ -45,6 +47,7 @@ exports.createMemory = function(req) {
   
   /* istanbul ignore next */
   if (req.file) {
+    /* istanbul ignore next */
     let ext = path.extname(req.file.originalname);
     let params = {
       ACL: 'public-read',
