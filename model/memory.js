@@ -13,8 +13,8 @@ const memorySchema = Schema({
   description: {type: String, required: true, maxlength: 1000},
   songTitle: {type: String, maxlength: 100},
   photo: {
-    imageURI: {type: String},
-    ObjectId: {type: String},
+    imageURI: {type: String, required: true},
+    ObjectId: {type: String, required: true},
   },
   friends: {type: String, maxlength: 200},
   dateCreated: {type: Date, default: Date.now, required: true},
