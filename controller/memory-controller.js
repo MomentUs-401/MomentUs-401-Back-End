@@ -78,9 +78,8 @@ exports.fetchMemory = function(req) {
 };
 
 exports.getMap = function(req) {
-  if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
 /* istanbul ignore next */
-  return Memory.findById(req.params.id)
+  return Memory.find({})
     .catch(err => Promise.reject(createError(err.status, err.message)));
 };
 

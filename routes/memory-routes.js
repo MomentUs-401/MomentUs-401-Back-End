@@ -9,7 +9,7 @@ const bearerAuth = require('../lib/bearer-auth-middleware.js');
 const memoryCtrl = require('../controller/memory-controller.js');
 
 module.exports = function(router){
-  router.post('/memory', bearerAuth, upload.single('image'), (req, res) => {
+  router.post('/memory', bearerAuth, upload.single('photo'), (req, res) => {
     debug('#POST /memory');
 
     memoryCtrl.createMemory(req)
@@ -40,7 +40,7 @@ module.exports = function(router){
       });
   });
 
-  router.put('/memory/:id', bearerAuth, upload.single('image'), (req, res) => {
+  router.put('/memory/:id', bearerAuth, upload.single('photo'), (req, res) => {
     debug('#PUT /memory/:id');
 
     memoryCtrl.updateMemory(req)
