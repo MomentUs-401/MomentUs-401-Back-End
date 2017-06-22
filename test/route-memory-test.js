@@ -37,16 +37,24 @@ describe('MEMORY ROUTES', function() {
         .send({
           title: `${this.tempMemory.title}`,
           date: `${this.tempMemory.date}`,
-          location: `${this.tempMemory.date}`,
+          location: {
+            lat: `${this.tempMemory.location.lat}`,
+            lng: `${this.tempMemory.location.lng}`,
+          },
           description: `${this.tempMemory.description}`,
           songTitle: `${this.tempMemory.songTitle}`,
-          photo: `${this.tempMemory.photo}`,
+          photo: {
+            imageURI: `${this.tempMemory.photo.imageURI}`,
+            ObjectId: `${this.tempMemory.photo.ObjectId}`,
+          },
           dateCreated: `${this.tempMemory.dateCreated}`,
           userId: `${this.tempMemory.userId}`,
+          friends: `${this.tempMemory.friends}`,
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error('test1', err.name);
+          if(err) console.error('test1', err.message);
+          console.log('res', res.status);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(201);
@@ -277,7 +285,7 @@ describe('MEMORY ROUTES', function() {
         });
     });
 
-    // it('should return a 400 on bad request', done => {
+    // it.only('should return a 400 on bad request', done => {
     //   chai.request(server)
     //   .put(`/api/memory/${this.tempMemory._id}`)
     //   .set({Authorization: `Bearer ${this.tempToken}`})
@@ -289,7 +297,7 @@ describe('MEMORY ROUTES', function() {
     //     expect(res).to.have.property('status')
     //       .that.is.a('number')
     //       .that.equals(400);
-    //     // expect(res.body.title).to.equal('New title');
+    //     expect(res.body.title).to.equal('New title');
     //     done();
     //   });
     // });
@@ -337,6 +345,18 @@ describe('MEMORY ROUTES', function() {
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(204);
+          done();
+        });
+    });
+    
+    it('should return a 404 if the id is not passed in', done => {
+      chai.request(server)
+        .delete('/api/memory/')
+        .set({Authorization: `Bearer ${this.tempToken}`})
+        .end((err, res) => {
+          expect(res).to.have.property('status')
+            .that.is.a('number')
+            .that.equals(404);
           done();
         });
     });
