@@ -341,7 +341,7 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-
+    
     it('should return a 404 without the memory Id', done => {
       chai.request(server)
         .put('/api/memory')
