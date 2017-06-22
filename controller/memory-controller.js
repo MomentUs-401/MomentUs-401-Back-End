@@ -126,27 +126,31 @@ exports.updateMemory = function(req) {
   }
 };
 
-exports.deleteMemory = function(reqUser, id) {
+exports.deleteMemory = function(id) {
   if(!id) return Promise.reject(createError(400, 'ID required'));
-  console.log('reqUser + id', reqUser, id);
-  return Memory.find({_id: id, userId: reqUser})
+  return Memory.findById(id)
     .then(memory => {
-      console.log('memoryPhoto', memory);
-      if(memory[0].photo) {
+      console.log('memory', memory);
+      if(memory.photo) {
         let params = {
           Bucket: process.env.AWS_BUCKET,
-          Key: memory[0].photo.ObjectId,
+          Key: memory.photo.ObjectId,
         };
+        console.log('PARAMS', params);
+        console.log('PARAMS MEMORY', memory);
         s3DeleteProm(params);
       }
+      console.log('DOES THIS WORK', memory);
       return memory;
     })
-    .then( (memory) => {
+    .then( memory => {
       console.log('then middle***********************');
       console.log('memory', memory);
-      Memory.findByIdAndRemove({_id: id, userId: reqUser});}
+      return Memory.findOneAndRemove({_id: id});
+      console.log('DELETE', memory);
+    }
     )
-    .catch(err => {
+    .catch( err => {
       console.log('err middle***********************');
       console.log(err);
       return Promise.reject(createError(err.status, err.message));

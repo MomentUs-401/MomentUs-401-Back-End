@@ -6,12 +6,15 @@ const Schema = mongoose.Schema;
 const memorySchema = Schema({
   title: {type: String, required: true, maxlength: 100},
   date: {type: Date, required: true},
-  location: {type: String, required: true},
+  location: {
+    lat: {type: Number, required: true},
+    lng: {type: Number, required: true},
+  },
   description: {type: String, required: true, maxlength: 1000},
   songTitle: {type: String, maxlength: 100},
   photo: {
-    imageURI: {type: String},
-    ObjectId: {type: String},
+    imageURI: {type: String, required: true},
+    ObjectId: {type: String, required: true},
   },
   friends: {type: String, maxlength: 200},
   dateCreated: {type: Date, default: Date.now, required: true},
