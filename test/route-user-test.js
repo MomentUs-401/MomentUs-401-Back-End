@@ -26,7 +26,6 @@ describe('USER ROUTES', function() {
 
     it('should return a 201 on user created', done => {
       chai.request(server)
-
         .post('/api/signup')
         .send({ username:`${this.tempUser.username}`, password:'123', email:`${this.tempUser.email}` })
         .end((err, res) => {
