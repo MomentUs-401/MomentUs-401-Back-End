@@ -136,16 +136,21 @@ exports.deleteMemory = function(id) {
           Bucket: process.env.AWS_BUCKET,
           Key: memory.photo.ObjectId,
         };
-        return s3DeleteProm(params);
+        console.log('PARAMS', params);
+        console.log('PARAMS MEMORY', memory);
+        s3DeleteProm(params);
       }
+      console.log('DOES THIS WORK', memory);
       return memory;
     })
-    .then( (memory) => {
+    .then( memory => {
       console.log('then middle***********************');
       console.log('memory', memory);
-      Memory.findByIdAndRemove(id);}
+      return Memory.findOneAndRemove({_id: id});
+      console.log('DELETE', memory);
+    }
     )
-    .catch(err => {
+    .catch( err => {
       console.log('err middle***********************');
       console.log(err);
       return Promise.reject(createError(err.status, err.message));
