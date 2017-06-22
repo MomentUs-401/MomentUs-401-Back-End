@@ -37,16 +37,24 @@ describe('MEMORY ROUTES', function() {
         .send({
           title: `${this.tempMemory.title}`,
           date: `${this.tempMemory.date}`,
-          location: `${this.tempMemory.date}`,
+          location: {
+            lat: `${this.tempMemory.location.lat}`,
+            lng: `${this.tempMemory.location.lng}`,
+          },
           description: `${this.tempMemory.description}`,
           songTitle: `${this.tempMemory.songTitle}`,
-          photo: `${this.tempMemory.photo}`,
+          photo: {
+            imageURI: `${this.tempMemory.photo.imageURI}`,
+            ObjectId: `${this.tempMemory.photo.ObjectId}`,
+          },
           dateCreated: `${this.tempMemory.dateCreated}`,
           userId: `${this.tempMemory.userId}`,
+          friends: `${this.tempMemory.friends}`,
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error('test1', err.name);
+          if(err) console.error('test1', err.message);
+          console.log('res', res.status);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(201);
