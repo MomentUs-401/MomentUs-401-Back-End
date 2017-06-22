@@ -40,6 +40,7 @@ describe('MEMORY ROUTES', function() {
           location: {
             lat: `${this.tempMemory.location.lat}`,
             lng: `${this.tempMemory.location.lng}`,
+            name: `${this.tempMemory.location.name}`,
           },
           description: `${this.tempMemory.description}`,
           songTitle: `${this.tempMemory.songTitle}`,
@@ -91,7 +92,7 @@ describe('MEMORY ROUTES', function() {
         .send({
           title: undefined,
           date: `${this.tempMemory.date}`,
-          location: `${this.tempMemory.date}`,
+          location: `${this.tempMemory.location}`,
           description: `${this.tempMemory.description}`,
           songTitle: `${this.tempMemory.songTitle}`,
           photo: `${this.tempMemory.photo}`,
@@ -114,7 +115,7 @@ describe('MEMORY ROUTES', function() {
         .send({
           title: `${this.tempMemory.title}`,
           date: undefined,
-          location: `${this.tempMemory.date}`,
+          location: `${this.tempMemory.location}`,
           description: `${this.tempMemory.description}`,
           songTitle: `${this.tempMemory.songTitle}`,
           photo: `${this.tempMemory.photo}`,
@@ -267,7 +268,7 @@ describe('MEMORY ROUTES', function() {
 
   describe('testing GET from api/map', function() {
     before(tempMemory.bind(this));
-    
+
     it('should return a 200 on good request', done => {
       chai.request(server)
         .get('/api/map')
@@ -280,7 +281,7 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-    
+
     it('should return a 404 on a bad route', done => {
       chai.request(server)
         .get('/api/map/null')
@@ -293,7 +294,7 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-    
+
     it('should return a 401 without a token', done => {
       chai.request(server)
         .get('/api/map')
@@ -341,7 +342,7 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-    
+
     it('should return a 404 without the memory Id', done => {
       chai.request(server)
         .put('/api/memory')
@@ -373,7 +374,7 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-    
+
     it('should return a 404 if the id is not passed in', done => {
       chai.request(server)
         .delete('/api/memory/')

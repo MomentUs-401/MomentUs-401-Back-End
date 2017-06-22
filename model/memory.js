@@ -9,6 +9,7 @@ const memorySchema = Schema({
   location: {
     lat: {type: Number, required: true},
     lng: {type: Number, required: true},
+    name: {type: String, required: true},
   },
   description: {type: String, required: true, maxlength: 1000},
   songTitle: {type: String, maxlength: 100},
