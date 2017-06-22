@@ -285,7 +285,7 @@ describe('MEMORY ROUTES', function() {
         });
     });
 
-    // it('should return a 400 on bad request', done => {
+    // it.only('should return a 400 on bad request', done => {
     //   chai.request(server)
     //   .put(`/api/memory/${this.tempMemory._id}`)
     //   .set({Authorization: `Bearer ${this.tempToken}`})
@@ -297,7 +297,7 @@ describe('MEMORY ROUTES', function() {
     //     expect(res).to.have.property('status')
     //       .that.is.a('number')
     //       .that.equals(400);
-    //     // expect(res.body.title).to.equal('New title');
+    //     expect(res.body.title).to.equal('New title');
     //     done();
     //   });
     // });
@@ -345,6 +345,18 @@ describe('MEMORY ROUTES', function() {
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(204);
+          done();
+        });
+    });
+    
+    it('should return a 404 if the id is not passed in', done => {
+      chai.request(server)
+        .delete('/api/memory/')
+        .set({Authorization: `Bearer ${this.tempToken}`})
+        .end((err, res) => {
+          expect(res).to.have.property('status')
+            .that.is.a('number')
+            .that.equals(404);
           done();
         });
     });

@@ -16,6 +16,7 @@ AWS.config.setPromisesDependency(require('bluebird'));
 const s3 = new AWS.S3();
 
 function s3UploadProm(params){
+  /* istanbul ignore next */
   return new Promise((resolve, reject) => {
     s3.upload(params, (err, data) => {
       if (err) return reject(createError(err.status, err.name));
@@ -26,7 +27,6 @@ function s3UploadProm(params){
 
 function s3DeleteProm(params){
   return new Promise((resolve, reject) => {
-    console.log('s3 delete params', params);
     s3.deleteObject(params, (err, data) => {
       if (err) return reject(createError(err.status, err.name));
       return resolve(data);
@@ -51,6 +51,7 @@ exports.createMemory = function(req) {
       Key: `${req.file.filename}${ext}`,
       Body: fs.createReadStream(req.file.path),
     };
+    /* istanbul ignore next */
     return s3UploadProm(params)
       .then(s3Data => {
         del([`${dataDir}/*`]);
@@ -60,9 +61,7 @@ exports.createMemory = function(req) {
         };
         return new Memory(req.body).save();
       })
-    // .then(memory => memory)
       .catch(err => Promise.reject(createError(err.status, err.message)));
-    //end of file upload? change memory model/schema? 2 paths?
   } else {
 
     return new Memory(req.body).save()
@@ -80,7 +79,7 @@ exports.fetchMemory = function(req) {
 
 exports.getMap = function(req) {
   if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
-
+/* istanbul ignore next */
   return Memory.findById(req.params.id)
     .catch(err => Promise.reject(createError(err.status, err.message)));
 };
@@ -107,6 +106,7 @@ exports.updateMemory = function(req) {
           Key: `${req.file.filename}${ext}`,
           Body: fs.createReadStream(req.file.path),
         };
+        /* istanbul ignore next */
         return s3UploadProm(params)
           .then(s3Data => {
             del([`${dataDir}/*`]);
@@ -130,29 +130,20 @@ exports.deleteMemory = function(id) {
   if(!id) return Promise.reject(createError(400, 'ID required'));
   return Memory.findById(id)
     .then(memory => {
-      console.log('memory', memory);
       if(memory.photo) {
         let params = {
           Bucket: process.env.AWS_BUCKET,
           Key: memory.photo.ObjectId,
         };
-        console.log('PARAMS', params);
-        console.log('PARAMS MEMORY', memory);
         s3DeleteProm(params);
       }
-      console.log('DOES THIS WORK', memory);
       return memory;
     })
     .then( memory => {
-      console.log('then middle***********************');
-      console.log('memory', memory);
       return Memory.findOneAndRemove({_id: id});
-      console.log('DELETE', memory);
     }
     )
     .catch( err => {
-      console.log('err middle***********************');
-      console.log(err);
       return Promise.reject(createError(err.status, err.message));
     });
 };
