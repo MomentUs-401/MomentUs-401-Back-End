@@ -24,18 +24,18 @@ module.exports = function(router){
     memoryCtrl.fetchMemory(req)
       .then(memory => res.json(memory))
       .catch(err => {
+        /* istanbul ignore next */
         res.status(err.status).send(err.message);
       });
   });
 
-
-  //revisit map route once googlemaps and location info is clearer
   router.get('/map', bearerAuth, (req, res) => {
     debug('#GET /map');
 
     memoryCtrl.getMap(req)
       .then(memories => res.json(memories))
       .catch(err => {
+        /* istanbul ignore next */
         res.status(err.status).send(err.message);
       });
   });
@@ -45,6 +45,7 @@ module.exports = function(router){
 
     memoryCtrl.updateMemory(req)
       .then(memory => res.json(memory))
+      /* istanbul ignore next */
       .catch(err => res.status(err.status).send(err.message));
 
   });
@@ -54,6 +55,7 @@ module.exports = function(router){
 
     memoryCtrl.deleteMemory(req.params.id)
       .then(() => res.sendStatus(204))
+      /* istanbul ignore next */
       .catch(err => res.status(err.status).send(err.message));
 
   });

@@ -26,6 +26,7 @@ userSchema.methods.generatePasswordHash = function(password){
   return new Promise((resolve, reject) => {
     if(!password) return reject(createError(400, 'Password required'));
     bcrypt.hash(password, 10, (err, hash) => {
+      /* istanbul ignore next */
       if(err) return reject(createError(401, 'Password hashing failed'));
       this.password = hash;
       resolve(this);
@@ -56,6 +57,7 @@ userSchema.methods.generateFindHash = function() {
       this.findHash = crypto.randomBytes(32).toString('hex');
       this.save()
         .then(() => resolve(this.findHash))
+        /* istanbul ignore next */
         .catch(err => {return reject(createError(401, err.message));});
     };
 
@@ -69,6 +71,7 @@ userSchema.methods.generateToken = function() {
   return new Promise((resolve, reject) => {
     this.generateFindHash()
       .then(findHash => resolve(jwt.sign({token: findHash}, process.env.APP_SECRET)))
+      /* istanbul ignore next */
       .catch(err => {return reject(createError(401, err.message));});
   });
 };
