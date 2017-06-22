@@ -42,7 +42,8 @@ exports.createMemory = function(req) {
   if(!req.user) return Promise.reject(createError(400, 'ID required'));
 
   req.body.userId = req.user._id;
-
+  
+  /* istanbul ignore next */
   if (req.file) {
     let ext = path.extname(req.file.originalname);
     let params = {
@@ -85,7 +86,8 @@ exports.getMap = function(req) {
 
 exports.updateMemory = function(req) {
   if(!req.params.id) return Promise.reject(createError(400, 'ID required'));
-
+  // attempted to write tests for this but file is not required
+  /* istanbul ignore next */
   if(req.file) {
     return Memory.find({_id: req.params.id, userId: req.user._id})
       .then(memory => {
