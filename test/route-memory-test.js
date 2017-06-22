@@ -265,6 +265,48 @@ describe('MEMORY ROUTES', function() {
     });
   });
 
+  describe('testing GET from api/map', function() {
+    before(tempMemory.bind(this));
+    
+    it('should return a 200 on good request', done => {
+      chai.request(server)
+        .get('/api/map')
+        .set({Authorization: `Bearer ${this.tempToken}`})
+        .end((err, res) => {
+          if(err) console.error(err.name);
+          expect(res).to.have.property('status')
+            .that.is.a('number')
+            .that.equals(200);
+          done();
+        });
+    });
+    
+    it('should return a 404 on a bad route', done => {
+      chai.request(server)
+        .get('/api/map/null')
+        .set({Authorization: `Bearer ${this.tempToken}`})
+        .end((err, res) => {
+          if(err) console.error(err.name);
+          expect(res).to.have.property('status')
+            .that.is.a('number')
+            .that.equals(404);
+          done();
+        });
+    });
+    
+    it('should return a 401 without a token', done => {
+      chai.request(server)
+        .get('/api/map')
+        .end((err, res) => {
+          if(err) console.error(err.name);
+          expect(res).to.have.property('status')
+            .that.is.a('number')
+            .that.equals(401);
+          done();
+        });
+    });
+  });
+
   describe('testing PUT from api/memory', function() {
     before(tempMemory.bind(this));
 
@@ -284,23 +326,6 @@ describe('MEMORY ROUTES', function() {
           done();
         });
     });
-
-    // it.only('should return a 400 on bad request', done => {
-    //   chai.request(server)
-    //   .put(`/api/memory/${this.tempMemory._id}`)
-    //   .set({Authorization: `Bearer ${this.tempToken}`})
-    //   .send({
-    //     date: 'New title',
-    //   })
-    //   .end((err, res) => {
-    //     if(err) console.error(err.name);
-    //     expect(res).to.have.property('status')
-    //       .that.is.a('number')
-    //       .that.equals(400);
-    //     expect(res.body.title).to.equal('New title');
-    //     done();
-    //   });
-    // });
 
     it('should return a 401 without a token', done => {
       chai.request(server)
