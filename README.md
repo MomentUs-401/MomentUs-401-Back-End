@@ -1,6 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/github/MomentUs-401/MomentUs-401-Back-End/badge.svg?branch=master)](https://coveralls.io/github/MomentUs-401/MomentUs-401-Back-End?branch=master)
 
-![momentus-logo](./assets/logo-small.png)
 # MomentUs-401-Back-End
 
 
