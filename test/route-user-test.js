@@ -29,7 +29,6 @@ describe('USER ROUTES', function() {
         .post('/api/signup')
         .send({ username:`${this.tempUser.username}`, password:'123', email:`${this.tempUser.email}` })
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(201);
@@ -55,7 +54,6 @@ describe('USER ROUTES', function() {
         .post('/api/user/foo')
         .send({ username:`test${this.tempUser.username}`, password:`${this.tempUser.password}` })
         .end((err, res) => {
-          if(!err) console.error(err.message);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -115,7 +113,6 @@ describe('USER ROUTES', function() {
         .get('/api/login')
         .auth(`${this.tempUser.username}`, '123')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('text')
             .that.is.a('string')
             .that.matches(/[A-Za-z0-9\-\\._~\\+\\/]+=*/g);
@@ -128,7 +125,6 @@ describe('USER ROUTES', function() {
         .get('/api/user/foo')
         .auth(`test${this.tempUser.username}`, '123')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -140,7 +136,6 @@ describe('USER ROUTES', function() {
       chai.request(server)
         .get('/api/login')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -153,7 +148,6 @@ describe('USER ROUTES', function() {
         .get('/api/login')
         .auth(`test${this.tempUser.username}`, 'BADPASS')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -179,7 +173,6 @@ describe('USER ROUTES', function() {
         .get('/api/login')
         .auth('nonsense', '123')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -192,7 +185,6 @@ describe('USER ROUTES', function() {
         .get('/api/login')
         .auth('', '123')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -209,7 +201,6 @@ describe('USER ROUTES', function() {
         .delete(`/api/account/${this.tempUser._id}`)
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(204);
@@ -222,7 +213,6 @@ describe('USER ROUTES', function() {
         .delete(`/api/user/foo/${this.tempUser._id}`)
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -235,7 +225,6 @@ describe('USER ROUTES', function() {
         .delete('/api/account')
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -248,7 +237,6 @@ describe('USER ROUTES', function() {
         .delete(`/api/account/${this.tempUser._id}`)
         .set('Authorization', `MAC ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
