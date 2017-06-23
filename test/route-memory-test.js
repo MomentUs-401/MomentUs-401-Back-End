@@ -31,7 +31,6 @@ describe('MEMORY ROUTES', function() {
     before(tempMemory.bind(this));
 
     it('should return a 201 on Memory created', done => {
-      console.log('LOGMYMEM', this.tempMemory);
       chai.request(server)
         .post('/api/memory')
         .send({
@@ -54,8 +53,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error('test1', err.message);
-          console.log('res', res.status);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(201);
@@ -78,7 +75,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error('test2', err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -101,7 +97,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(400);
@@ -124,7 +119,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(400);
@@ -147,7 +141,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(400);
@@ -170,7 +163,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(400);
@@ -193,7 +185,6 @@ describe('MEMORY ROUTES', function() {
         })
         .set('Authorization', `Bearer ${this.tempToken}`)
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(400);
@@ -215,7 +206,6 @@ describe('MEMORY ROUTES', function() {
           userId: undefined,
         })
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -232,7 +222,6 @@ describe('MEMORY ROUTES', function() {
         .get('/api/memory')
         .set({Authorization: `Bearer ${this.tempToken}`})
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(200);
@@ -245,7 +234,6 @@ describe('MEMORY ROUTES', function() {
         .get('/api/memory/abc123')
         .set({Authorization: `Bearer ${this.tempToken}`})
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -257,7 +245,6 @@ describe('MEMORY ROUTES', function() {
       chai.request(server)
         .get('/api/memory')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -274,7 +261,6 @@ describe('MEMORY ROUTES', function() {
         .get('/api/map')
         .set({Authorization: `Bearer ${this.tempToken}`})
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(200);
@@ -287,7 +273,6 @@ describe('MEMORY ROUTES', function() {
         .get('/api/map/null')
         .set({Authorization: `Bearer ${this.tempToken}`})
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);
@@ -299,7 +284,6 @@ describe('MEMORY ROUTES', function() {
       chai.request(server)
         .get('/api/map')
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -319,7 +303,6 @@ describe('MEMORY ROUTES', function() {
           title: 'New title',
         })
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(200);
@@ -335,7 +318,6 @@ describe('MEMORY ROUTES', function() {
           title: 'New title',
         })
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(401);
@@ -351,7 +333,6 @@ describe('MEMORY ROUTES', function() {
           title: 'New title',
         })
         .end((err, res) => {
-          if(err) console.error(err.name);
           expect(res).to.have.property('status')
             .that.is.a('number')
             .that.equals(404);

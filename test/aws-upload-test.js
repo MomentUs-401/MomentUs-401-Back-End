@@ -15,19 +15,19 @@ describe('Testing the s3 Upload Functionality', function() {
         Body: 'test body',
         ACL: 'public-read',
       };
-      
+
       s3UploadPromise(params)
-      .then(data => {
-        let uploadMock = mockAWS.uploadMock;
-        expect(data.ETag).to.equal(uploadMock.ETag);
-        expect(data.Location).to.equal(uploadMock.Location);
-        expect(data.Key).to.equal(uploadMock.Key);
-        done();
-      })
-      .catch(done);
+        .then(data => {
+          let uploadMock = mockAWS.uploadMock;
+          expect(data.ETag).to.equal(uploadMock.ETag);
+          expect(data.Location).to.equal(uploadMock.Location);
+          expect(data.Key).to.equal(uploadMock.Key);
+          done();
+        })
+        .catch(done);
     });
   });
-  
+
   describe('Testing with ACL missing', function() {
     it('should throw an error', done => {
       let params = {
@@ -35,17 +35,17 @@ describe('Testing the s3 Upload Functionality', function() {
         Key: 'test key',
         Body: 'test body',
       };
-      
+
       s3UploadPromise(params)
-      .then(done)
-      .catch(err => {
-        expect(err.message).to.equal('ACL must be public read');
-      });
-      
+        .then(done)
+        .catch(err => {
+          expect(err.message).to.equal('ACL must be public read');
+        });
+
       done();
     });
   });
-  
+
   describe('Testing with key missing', function() {
     it('should throw an error', done => {
       let params = {
@@ -53,17 +53,17 @@ describe('Testing the s3 Upload Functionality', function() {
         Body: 'test body',
         ACL: 'public-read',
       };
-      
+
       s3UploadPromise(params)
-      .then(done)
-      .catch(err => {
-        expect(err.message).to.equal('Requires Key');
-      });
-      
+        .then(done)
+        .catch(err => {
+          expect(err.message).to.equal('Requires Key');
+        });
+
       done();
     });
   });
-  
+
   describe('Testing with body missing', function() {
     it('should throw an error', done => {
       let params = {
@@ -71,13 +71,13 @@ describe('Testing the s3 Upload Functionality', function() {
         Key: 'test key',
         ACL: 'public-read',
       };
-      
+
       s3UploadPromise(params)
-      .then(done)
-      .catch(err => {
-        expect(err.message).to.equal('Requires Body');
-      });
-      
+        .then(done)
+        .catch(err => {
+          expect(err.message).to.equal('Requires Body');
+        });
+
       done();
     });
   });
