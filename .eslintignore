@@ -1,0 +1,8 @@
+**/node_modules/*
+**/vendor/*
+**/*.min.js
+**/build/*
+**/LICENSE/*
+**/Package.json/*
+**/README.md/*
+**/Procfile/*
