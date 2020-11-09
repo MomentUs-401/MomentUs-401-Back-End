@@ -39,7 +39,7 @@ describe('Testing the s3 Upload Functionality', function() {
       s3UploadPromise(params)
         .then(done)
         .catch(err => {
-          expect(err.message).to.equal('ACL must be public read');
+          expect(err.message).to.equal('ACL must be set to public read');
         });
 
       done();
@@ -57,7 +57,7 @@ describe('Testing the s3 Upload Functionality', function() {
       s3UploadPromise(params)
         .then(done)
         .catch(err => {
-          expect(err.message).to.equal('Requires Key');
+          expect(err.message).to.equal('requires key');
         });
 
       done();
@@ -75,7 +75,7 @@ describe('Testing the s3 Upload Functionality', function() {
       s3UploadPromise(params)
         .then(done)
         .catch(err => {
-          expect(err.message).to.equal('Requires Body');
+          expect(err.message).to.equal('requires body');
         });
 
       done();

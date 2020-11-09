@@ -26,6 +26,7 @@ exports.fetchUser = function(reqAuth){
 };
 
 exports.deleteUser = function(id) {
+  debug('#authCtrl deleteUser');
 
   return User.findByIdAndRemove(id);
 };

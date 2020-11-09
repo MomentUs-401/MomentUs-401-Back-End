@@ -1,36 +1,14 @@
 {
-  "name": "momentus-401-back-end",
-  "version": "1.0.0",
-  "description": "digital scrapboook app",
-  "main": "server.js",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "test-local": "mocha",
-    "lint": "eslint ./** --ignore-pattern /node_modules/*/",
-    "start": "DEBUG=momentus-401 nodemon server.js",
-    "debug": "DEBUG=momentus-401* npm run test",
-    "cover": "istanbul cover _mocha",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-    "test": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/MomentUs-401/MomentUs-401-Back-End.git"
-  },
   "author": "momentus group",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/MomentUs-401/MomentUs-401-Back-End/issues"
   },
-  "homepage": "https://github.com/MomentUs-401/MomentUs-401-Back-End#readme",
   "dependencies": {
     "aws-sdk": "^2.72.0",
     "bcrypt": "^5.0.0",
     "bluebird": "^3.5.0",
     "body-parser": "^1.19.0",
-    "cors": "^2.8.3",
+    "cors": "~2.8.3",
     "crypto": "0.0.3",
     "debug": "^2.6.9",
     "del": "^3.0.0",
@@ -43,6 +21,7 @@
     "morgan": "^1.9.1",
     "multer": "^1.3.0"
   },
+  "description": "digital social scrapboook app",
   "devDependencies": {
     "aws-sdk-mock": "^1.7.0",
     "chai": "^4.0.2",
@@ -52,5 +31,26 @@
     "istanbul": "^0.4.5",
     "mocha": "^6.2.2",
     "mocha-lcov-reporter": "^1.3.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "homepage": "https://github.com/MomentUs-401/MomentUs-401-Back-End#readme",
+  "license": "MIT",
+  "main": "server.js",
+  "name": "momentus-401-back-end",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MomentUs-401/MomentUs-401-Back-End.git"
+  },
+  "scripts": {
+    "test-local": "mocha",
+    "lint": "eslint ./** --ignore-pattern /node_modules/*/",
+    "start": "DEBUG=momentus-401 nodemon server.js",
+    "debug": "DEBUG=momentus-401* npm run test",
+    "cover": "istanbul cover _mocha",
+    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
+    "test": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls"
+  },
+  "version": "1.0.0"
 }
